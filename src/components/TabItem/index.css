@@ -1,0 +1,16 @@
+.tab-items-list {
+  list-style-type: none;
+  font-family: 'Roboto';
+}
+
+.tab-button {
+  background-color: transparent;
+  border: 0;
+  text-decoration: underline;
+  color: #ffffff;
+  margin-right: 30px;
+  font-size: 16px;
+  cursor: pointer;
+  outline: none;
+  line-height: 10px;
+}

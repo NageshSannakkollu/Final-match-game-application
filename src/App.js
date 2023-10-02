@@ -1,5 +1,7 @@
 import {Component} from 'react'
 import Header from './components/Header'
+import TabItem from './components/TabItem'
+import ThumbnailItem from './components/ThumbnailItem'
 import './App.css'
 
 // These are the lists used in the application. You can move them to any component needed.
@@ -250,17 +252,125 @@ const imagesList = [
 
 // Replace your code here
 class App extends Component {
-  state = {score: 0, timer: 60, activeThumbnailId: imagesList[0].id}
+  state = {
+    activeImageId: imagesList[0].id,
+    activeTabId: tabsList[0].tabId,
+    score: 0,
+    timer: 60,
+  }
+
+  componentDidMount() {
+    this.secondsId = setInterval(this.tick, 1000)
+  }
+
+  tick = () => {
+    const {timer} = this.state
+    if (timer !== 0) {
+      this.setState(prevState => ({
+        timer: prevState.timer - 1,
+      }))
+    }
+  }
+
+  clickOnReset = () => {
+    this.setState({timer: 60})
+    this.setState({score: 0})
+    this.setState({activeImageId: imagesList[0].id})
+    this.setState({activeTabId: tabsList[0].tabId})
+  }
+
+  tabClicked = tabValue => {
+    this.setState({activeTabId: tabValue})
+  }
+
+  matchThumbnailImage = id => {
+    const {activeImageId} = this.state
+    const matchedIds = activeImageId === id
+    const imagesListLength = imagesList.length
+
+    if (matchedIds) {
+      const matchedImage =
+        imagesList[Math.ceil(Math.random() * imagesListLength)]
+      this.setState({activeImageId: matchedImage.id})
+      this.setState(prevState => ({score: prevState.score + 1}))
+    } else {
+      this.setState({timer: 0})
+    }
+  }
+
+  getFilteredImages = () => {
+    const {activeTabId} = this.state
+    const filteredImages = imagesList.filter(
+      eachImage => eachImage.category === activeTabId,
+    )
+    return filteredImages
+  }
 
   render() {
-    const {activeThumbnailId, score, timer} = this.state
-    const {imageUrl} = imagesList[activeThumbnailId]
-    console.log(imageUrl)
+    const {score, timer, activeImageId} = this.state
+    const filteredImagesList = this.getFilteredImages()
+    const listOfImages = imagesList.filter(
+      eachUrl => eachUrl.id === activeImageId,
+    )
+    const finalImages = listOfImages.map(eachUrl => {
+      if (eachUrl.id === activeImageId) {
+        return eachUrl.imageUrl
+      }
+      return null
+    })
+
     return (
       <div>
         <Header score={score} timer={timer} />
         <div className="app-container">
-          <img src={imageUrl} alt="match" className="image" />
+          {timer !== 0 ? (
+            <div className="match-game-container">
+              <img src={finalImages} alt="match" className="main-image" />
+              <ul className="tabs-list-container">
+                {tabsList.map(eachTab => (
+                  <TabItem
+                    tabClicked={this.tabClicked}
+                    tabDetails={eachTab}
+                    key={eachTab.tabId}
+                  />
+                ))}
+              </ul>
+
+              <ul className="thumbnail-list-container">
+                {filteredImagesList.map(eachImage => (
+                  <ThumbnailItem
+                    matchThumbnailImage={this.matchThumbnailImage}
+                    imageDetails={eachImage}
+                    key={eachImage.id}
+                  />
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <div className="game-result-container">
+              <img
+                src="https://assets.ccbp.in/frontend/react-js/match-game-trophy.png"
+                alt="trophy"
+                className="trophy-image"
+              />
+              <div className="results-inside-container">
+                <p className="your-score-heading">Your Score</p>
+                <p className="score-result">{score}</p>
+                <button
+                  type="button"
+                  className="play-again-button"
+                  onClick={this.clickOnReset}
+                >
+                  <img
+                    src="https://assets.ccbp.in/frontend/react-js/match-game-play-again-img.png"
+                    alt="reset"
+                    className="play-again-img"
+                  />
+                  <p>PLAY AGAIN</p>
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     )

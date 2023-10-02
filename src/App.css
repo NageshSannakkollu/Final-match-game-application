@@ -14,6 +14,9 @@ body {
 .app-container {
   background-image: url('https://assets.ccbp.in/frontend/react-js/match-game-bg.png');
   min-height: 100vh;
+  padding: 30px;
+}
+.match-game-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -22,4 +25,76 @@ body {
 
 .main-image {
   width: 80%;
+  background-size: cover;
+}
+.tabs-list-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style-type: none;
+  margin-top: 25px;
+}
+
+.thumbnail-list-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  list-style-type: none;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.game-result-container {
+  background-image: url('https://assets.ccbp.in/frontend/react-js/match-game-score-card-lg-bg.png');
+  width: 80%;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
+  font-family: 'Roboto';
+  color: #ffffff;
+  padding: 60px;
+  padding-top: 220px;
+  margin-left: 50px;
+}
+.trophy-image {
+  height: 220px;
+  width: 350px;
+  background-size: cover;
+}
+.results-inside-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  line-height: 5px;
+}
+@media screen and (max-width: 991px) {
+  .game-result-container {
+    margin-left: 60px;
+    padding-top: 200px;
+    background-size: cover;
+  }
+}
+.play-again-button {
+  display: flex;
+  align-items: center;
+  padding: 3px 12px;
+  border-radius: 8px;
+  border: 0;
+  background-color: #cf60c8;
+  color: #ffffff;
+  font-size: 18px;
+}
+
+.score-result {
+  font-size: 50px;
+  font-weight: 600;
+}
+.your-score-heading {
+  font-size: 20px;
+  font-weight: 600;
 }
